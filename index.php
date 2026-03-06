@@ -1,15 +1,18 @@
 <?php
+session_start();
 require_once("functions.php");
 
 $password_length = 0;
 
 if (isset($_GET["password"])) {
     $password_length = (int) $_GET["password"];
+
     if ($password_length < 6 || $password_length > 20) {
         die("Lunghezza non valida.");
     }
+    $_SESSION["password_long"] = $password_length;
+    header("Location: result.php");
 }
-
 ?>
 
 
@@ -31,9 +34,6 @@ if (isset($_GET["password"])) {
         <p>Genera una password completamente sicura!</p>
 
         <div>
-            <!-- Creare un form che invii in GET la lunghezza desiderata della password. Una nostra funzione utilizzerà
-            questo dato per generare una password casuale (composta da lettere minuscole, maiuscole, numeri e/o simboli)
-            della lunghezza specificata, da restituire all’utente. -->
             <form action="" method="GET">
                 <div class="row g-3 align-items-center">
                     <div class="col-auto">
@@ -49,12 +49,12 @@ if (isset($_GET["password"])) {
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">Genera!</button>
-                <a class="btn btn-danger" href="index.php">Resetta</a>
+                <!-- <a class="btn btn-danger" href="index.php">Resetta</a> -->
             </form>
         </div>
-        <?php
+        <!-- <?php
         echo password_generator($password_length);
-        ?>
+        ?> -->
 
     </div>
     </div>
