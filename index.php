@@ -3,15 +3,16 @@ session_start();
 require_once("functions.php");
 
 $password_length = 0;
-
+$error = "";
 if (isset($_GET["password"])) {
     $password_length = (int) $_GET["password"];
 
     if ($password_length < 6 || $password_length > 20) {
-        die("Lunghezza non valida.");
+        $error = "Errore, hai inserito una lunghezza non valida. Riprova!";
+    } else {
+        $_SESSION["password_long"] = $password_length;
+        header("Location: result.php");
     }
-    $_SESSION["password_long"] = $password_length;
-    header("Location: result.php");
 }
 ?>
 
@@ -55,7 +56,46 @@ if (isset($_GET["password"])) {
                                 <input name="password" type="number" id="password" class="form-control form-control-lg"
                                     min="6" max="20" placeholder="Es. 16">
                                 <div class="form-text">Inserisci un numero tra 6 e 20.</div>
+                                <?php if (!$error == "") {
+                                    ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?php echo $error; ?>
+                                    </div>
+                                <?php }
+                                ?>
                             </div>
+                            <!-- <div class="mb-4">
+                                <label class="form-label fw-semibold">Caratteri da includere</label>
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="uppercase" id="uppercase">
+                                        <label class="form-check-label" for="uppercase">
+                                            <i class="bi bi-alphabet-uppercase me-1"></i>Lettere maiuscole <span
+                                                class="text-muted">(A-Z)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="lowercase" id="lowercase">
+                                        <label class="form-check-label" for="lowercase">
+                                            <i class="bi bi-alphabet me-1"></i>Lettere minuscole <span
+                                                class="text-muted">(a-z)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="numbers" id="numbers">
+                                        <label class="form-check-label" for="numbers">
+                                            <i class="bi bi-123 me-1"></i>Numeri <span class="text-muted">(0-9)</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="symbols" id="symbols">
+                                        <label class="form-check-label" for="symbols">
+                                            <i class="bi bi-asterisk me-1"></i>Simboli <span
+                                                class="text-muted">(!@#$...)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div> -->
                             <div class="d-grid gap-2">
                                 <button class="btn btn-primary btn-lg" type="submit">
                                     <i class="bi bi-lightning-charge-fill me-2"></i>Genera password
